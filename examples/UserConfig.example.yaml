@@ -1,0 +1,166 @@
+# Agent Protocol Stack - 示例配置
+# 这是一个完整的配置示例
+
+cluster:
+  name: "My Agent Team"
+  version: "1.0"
+
+agents:
+  - id: "spine_001"
+    name: "Coordinator"
+    role: "spine"
+    type: "coordinator"
+    workspace: "~/.openclaw/workspace/"
+    capabilities:
+      - "规划"
+      - "协调"
+      - "决策"
+
+  - id: "leaf_001"
+    name: "Analyst"
+    role: "leaf"
+    type: "executor"
+    workspace: "~/.openclaw/agents/analyst/"
+    capabilities:
+      - "分析"
+      - "数据"
+      - "研究"
+
+  - id: "leaf_002"
+    name: "Designer"
+    role: "leaf"
+    type: "designer"
+    workspace: "~/.openclaw/agents/designer/"
+    capabilities:
+      - "PPT"
+      - "设计"
+      - "可视化"
+
+  - id: "leaf_003"
+    name: "Developer"
+    role: "leaf"
+    type: "developer"
+    workspace: "~/.openclaw/agents/developer/"
+    capabilities:
+      - "开发"
+      - "实现"
+      - "代码"
+
+  - id: "observer_001"
+    name: "Supervisor"
+    role: "observer"
+    type: "supervisor"
+    workspace: "~/.openclaw/agents/supervisor/"
+    capabilities:
+      - "审核"
+      - "监督"
+      - "质量"
+
+routing:
+  rules:
+    - keywords:
+        - "分析"
+        - "数据"
+        - "报表"
+        - "研究"
+      targets:
+        - "leaf_001"
+      description: "数据分析任务"
+
+    - keywords:
+        - "PPT"
+        - "演示"
+        - "设计"
+        - "可视化"
+      targets:
+        - "leaf_002"
+      description: "设计制作任务"
+
+    - keywords:
+        - "开发"
+        - "代码"
+        - "实现"
+        - "系统"
+      targets:
+        - "leaf_003"
+      description: "开发实现任务"
+
+    - keywords:
+        - "审核"
+        - "监督"
+        - "质量"
+      targets:
+        - "observer_001"
+      description: "监督任务"
+
+    - keywords:
+        - "规划"
+        - "协调"
+        - "决策"
+      targets:
+        - "spine_001"
+      description: "协调任务"
+
+  composite_tasks:
+    - task_type: "专业报告"
+      required_skills:
+        - skill: "分析"
+          agent: "leaf_001"
+        - skill: "PPT"
+          agent: "leaf_002"
+        - skill: "设计"
+          agent: "leaf_002"
+      execution_mode: "sequential"
+      description: "分析+制作报告"
+
+    - task_type: "技术方案"
+      required_skills:
+        - skill: "分析"
+          agent: "leaf_001"
+        - skill: "开发"
+          agent: "leaf_003"
+      execution_mode: "parallel"
+      description: "分析+实现"
+
+  default:
+    target: "spine_001"
+    description: "无法识别时路由到Spine"
+
+memory:
+  layers:
+    - name: "全局记忆"
+      level: 0
+      visibility: "all"
+      sync_mode: "immediate"
+      
+    - name: "局部记忆"
+      level: 1
+      visibility: "group"
+      sync_mode: "daily"
+      
+    - name: "私有记忆"
+      level: 2
+      visibility: "self"
+      sync_mode: "manual"
+
+  groups:
+    - name: "项目组-AIM"
+      members:
+        - "spine_001"
+        - "leaf_001"
+        - "leaf_002"
+      topics:
+        - "AIM项目任务"
+        - "项目进度"
+
+communication:
+  type: "feishu"
+  message_format: "markdown"
+
+heartbeat:
+  interval: 60
+  timeout: 120
+
+fault_tolerance:
+  max_retry: 3
+  auto_failover: true
