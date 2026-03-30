@@ -1,18 +1,20 @@
 # 分层记忆架构
 
-> 版本：1.0 | 状态：生效
-> 基于：文档存储分级方案
-> 更新日期：2026-03-29
+> 版本：1.2 | 状态：生效
+> 更新：路径改为相对路径，兼容开源部署
+> 更新日期：2026-03-30
 
 ---
 
 ## 一、记忆层级定义
 
-| 层级 | 名称 | 位置 | 可见性 | 同步方式 |
-|------|------|------|--------|----------|
-| **L0** | 全局记忆 | `Memory/Global/` | 所有Agent | 即时推送 |
-| **L1** | 局部记忆 | `Memory/Local/` | 项目组/业务组 | 定时同步 |
-| **L2** | 私有记忆 | `{workspace}/memory/` | 仅自己 | 手动同步 |
+| 层级 | 名称 | 相对路径 | 可见性 | 同步方式 |
+|------|------|----------|--------|----------|
+| **L0** | 全局记忆 | `Memory/L0/Global/` | 所有Agent | 即时推送 |
+| **L1** | 局部记忆 | `Memory/L1/Local/` | 项目组/业务组 | 定时同步 |
+| **L2** | 私有记忆 | `Memory/L2/Private/` | 仅自己 | 手动同步 |
+
+> **路径说明**：以上路径均相对于 `memory_root` 配置根目录。克隆仓库后，在 `config/UserConfig.yaml` 中设置 `memory_root` 即可。
 
 ---
 
@@ -20,7 +22,7 @@
 
 ### L0 全局记忆（Global）
 
-**位置**: `Obsidian/⚙️Clusters/Memory/Global/`
+**位置**: `Memory/L0/Global/`
 
 **内容**:
 - 📜 法律法规（政策、法规、合规要求）
@@ -36,7 +38,7 @@
 
 ### L1 局部记忆（Local）
 
-**位置**: `Obsidian/⚙️Clusters/Memory/Local/`
+**位置**: `Memory/L1/Local/`
 
 **结构**:
 ```
@@ -64,11 +66,11 @@ Local/
 
 ### L2 私有记忆（Private）
 
-**位置**: `{agent_workspace}/memory/`
+**位置**: `Memory/L2/Private/`
 
 **结构**:
 ```
-memory/
+Private/
 ├── daily/              ← 每日记录
 │   └── YYYY-MM-DD.md
 │
@@ -95,7 +97,7 @@ sync_policy:
       - "important: true"
       - "shared: true"
     review: "required"         # 需要审核
-    
+
   # L1 → L0: 局部到全局
   local_to_global:
     trigger: "weekly"         # 每周触发
@@ -105,14 +107,14 @@ sync_policy:
       - "type: knowledge"     # 知识类
       - "type: rule"         # 规则类
     review: "required"
-    
+
   # L0 → L1/L2: 全局推送
   global_push:
     trigger: "immediate"      # 即时推送
     content_types:
-      - "law_update"         # 法律更新
-      - "rule_change"        # 规则变更
-      - "announcement"       # 重要通知
+      - "law_update"          # 法律更新
+      - "rule_change"         # 规则变更
+      - "announcement"        # 重要通知
 ```
 
 ---
@@ -138,6 +140,23 @@ sync_policy:
 
 ---
 
+## 六、存储说明
+
+本协议的记忆层设计为**存储无关**，可兼容任意文件系统：
+
+- **推荐方案**：Obsidian（免费版即可，提供双向链接与图谱视图）
+- **替代方案**：任意 Markdown 文件夹 + git 版本控制
+- **进阶方案**：SQLite / JSON 文件库
+
+配置示例（`config/UserConfig.yaml`）：
+```yaml
+memory:
+  root: "./memory"              # 相对于仓库根目录
+  # root: "/home/user/my-memory" # 或使用绝对路径
+```
+
+---
+
 ## 关联文档
 
 - `../Protocol/Core/AgentProtocol.md` - 核心协议
@@ -146,4 +165,4 @@ sync_policy:
 
 ---
 
-*基于文档存储分级方案整合 | 2026-03-29*
+*路径版本 1.2 | 2026-03-30*
