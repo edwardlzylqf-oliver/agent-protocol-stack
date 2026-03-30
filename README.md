@@ -60,23 +60,23 @@ APS —— 为多智能体协作而生的开放协议
 │                          Agent Protocol Stack                           │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
-│  L7 业务协作层                                                          │
+│  L7 业务协作层  ← 用户请求 / 返回结果                                    │
 │  ├─ 角色协议                                                           │
 │  ├─ 任务协议                                                           │
 │  └─ 记忆协议                                                           │
-│                                                                          │
-│  L6 协议层                                                              │
+│                              ↑↓                                          │
+│  L6 协议层        ← 请求 / 响应                                         │
 │  ├─ AMP (Agent Message Protocol)                                       │
 │  ├─ MCP (Model Context Protocol)                                       │
 │  └─ CLI (命令行交互协议)                                               │
-│                                                                          │
-│  L5 传输层                                                              │
+│                              ↑↓                                          │
+│  L5 传输层        ← 字节流 / 数据包                                     │
 │  ├─ HTTP / HTTPS                                                       │
 │  ├─ WebSocket                                                          │
 │  ├─ gRPC                                                              │
 │  └─ Message Queue (MQ)                                                 │
-│                                                                          │
-│  L4 适配层                                                              │
+│                              ↑↓                                          │
+│  L4 适配层        ← 平台原生格式 / 转换                                  │
 │  ├─ OpenClaw Adapter                                                   │
 │  ├─ Claude Adapter                                                     │
 │  └─ Cursor Adapter                                                     │
