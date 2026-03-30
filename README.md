@@ -60,26 +60,26 @@ APS —— 为多智能体协作而生的开放协议
 │                          Agent Protocol Stack                           │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
-│  L7 应用层                                                              │
-│  ├─ Spine-Leaf 协作协议                                                │
-│  ├─ 任务管理                                                           │
-│  ├─ 分层记忆                                                           │
-│  └─ 仲裁机制                                                           │
+│  L7 业务协作层                                                          │
+│  ├─ 角色协议                                                           │
+│  ├─ 任务协议                                                           │
+│  └─ 记忆协议                                                           │
 │                                                                          │
-│  L6 传输层                                                              │
-│  ├─ HTTP / WebSocket                                                   │
+│  L6 协议层                                                              │
+│  ├─ AMP (Agent Message Protocol)                                       │
+│  ├─ MCP (Model Context Protocol)                                       │
+│  └─ CLI (命令行交互协议)                                               │
+│                                                                          │
+│  L5 传输层                                                              │
+│  ├─ HTTP / HTTPS                                                       │
+│  ├─ WebSocket                                                          │
 │  ├─ gRPC                                                              │
-│  └─ Message Queue                                                      │
-│                                                                          │
-│  L5 协议层 (AMP - Agent Message Protocol)                               │
-│  ├─ 消息格式                                                           │
-│  ├─ 寻址机制                                                           │
-│  └─ 会话管理                                                           │
+│  └─ Message Queue (MQ)                                                 │
 │                                                                          │
 │  L4 适配层                                                              │
 │  ├─ OpenClaw Adapter                                                   │
-│  ├─ Claude Adapter                                                    │
-│  └─ Generic Adapter                                                   │
+│  ├─ Claude Adapter                                                     │
+│  └─ Cursor Adapter                                                     │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
@@ -95,7 +95,7 @@ APS —— 为多智能体协作而生的开放协议
 | 🧠 **分层记忆** | 全局/局部/私有 三级记忆系统 |
 | ⚖️ **仲裁机制** | 版本控制 + 冲突检测 + 自动解决 |
 | 🔒 **企业级安全** | 认证授权 + 加密 + 审计日志 |
-| 🌐 **跨平台互操作** | 适配器模式支持多平台 |
+| 🌐 **跨平台互操作** | 适配器模式支持 OpenClaw / Claude / Cursor |
 
 ---
 
